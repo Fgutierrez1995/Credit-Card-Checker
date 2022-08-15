@@ -68,36 +68,6 @@ const validateCred = card => {
     }
 }
 
-// validates the card assuming it's an array of numbers
-const validateCred1 = (card) => {
-    // inverse card array used for validation
-    const inverseCard = [];
-    for (var num of card) {
-      inverseCard.unshift(num);
-    }
-  
-    // calculates sum with Luhn algorithm
-    let sum = 0;
-    // starting from one index past the check digit
-    for (let i = 1; i < inverseCard.length; i++) {
-      // the digits at odd indexes are doubled
-      if (i % 2 === 1) {
-        if (inverseCard[i] * 2 > 9) {
-          sum += inverseCard[i] * 2 - 9;
-        } else {
-          sum += inverseCard[i] * 2;
-        }
-      } else {
-        sum += inverseCard[i];
-      }
-    }
-    // end of sum
-  
-    // returns the comparison between the given check digit and the calculated check digit
-    return card[card.length -1] === 10 - (sum % 10);
-  };
-
-
 //should return true
 console.log(validateCred(valid1));
 console.log(validateCred(valid2));
