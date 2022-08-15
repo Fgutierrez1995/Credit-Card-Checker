@@ -23,12 +23,97 @@ const mystery5 = [4, 9, 1, 3, 5, 4, 0, 4, 6, 3, 0, 7, 2, 5, 2, 3]
 const batch = [valid1, valid2, valid3, valid4, valid5, invalid1, invalid2, invalid3, invalid4, invalid5, mystery1, mystery2, mystery3, mystery4, mystery5]
 
 
-// Add your functions below:
+//function will check if array of credit cards is valid
+//based on the Luhn algorithm
+const validateCred = card => {
+    let sum = 0;
+    let totalEvenArray = 0;
+    let totalOddArray = 0;
+    //reversing card array
+    const reverseCard = card.reverse();
+    //iterating through the rerverse array 
+    for (let i = 0; i < reverseCard.length; i++)
+    {
+        //checking all odd numbers in the array
+        if (i % 2 === 1)
+        {
+            // assigning every odd number in the array to var oddArray and multiply it by 2;
+            let oddArray = card[i] * 2;
+            //checking if oddArray is greater than 9, if so subtract 9.
+            if (oddArray > 9)
+            {
+                oddArray = oddArray - 9;   
+            }
+           // console.log(`i: ${i} array: ${card[i]} oddArray: ${oddArray}` )
+            totalOddArray += oddArray;
+        }
+        else
+        {
+            let evenArray = card[i];
+            //console.log(`i: ${i} array: ${card[i]} evenArray: ${evenArray}` )
+            totalEvenArray += evenArray;
+        }
+
+    }
+    //getting total value based on the Luhn algorithm
+    sum = totalEvenArray + totalOddArray;
+    //if the sum of the numbers remainder is 0, then the output is true based on the Luhn algorithm
+    if (sum % 10 === 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+// validates the card assuming it's an array of numbers
+const validateCred1 = (card) => {
+    // inverse card array used for validation
+    const inverseCard = [];
+    for (var num of card) {
+      inverseCard.unshift(num);
+    }
+  
+    // calculates sum with Luhn algorithm
+    let sum = 0;
+    // starting from one index past the check digit
+    for (let i = 1; i < inverseCard.length; i++) {
+      // the digits at odd indexes are doubled
+      if (i % 2 === 1) {
+        if (inverseCard[i] * 2 > 9) {
+          sum += inverseCard[i] * 2 - 9;
+        } else {
+          sum += inverseCard[i] * 2;
+        }
+      } else {
+        sum += inverseCard[i];
+      }
+    }
+    // end of sum
+  
+    // returns the comparison between the given check digit and the calculated check digit
+    return card[card.length -1] === 10 - (sum % 10);
+  };
 
 
+//should return true
+console.log(validateCred(valid1));
+console.log(validateCred(valid2));
+console.log(validateCred(valid3));
+console.log(validateCred(valid4));
+console.log(validateCred(valid5));
 
+//should return false
+console.log(validateCred(invalid1));
+console.log(validateCred(invalid2));
+console.log(validateCred(invalid3));
+console.log(validateCred(invalid4));
+console.log(validateCred(invalid5));
 
-
-
-
-
+console.log(validateCred(mystery1)); //should return false
+console.log(validateCred(mystery2)); //should return true
+console.log(validateCred(mystery3)); //should return false
+console.log(validateCred(mystery4)); //should return false
+console.log(validateCred(mystery5)); //should return true
