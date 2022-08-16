@@ -30,60 +30,71 @@ const validateCred = card => {
     let totalEvenArray = 0;
     let totalOddArray = 0;
     //reversing card array
-    const reverseCard = card.reverse();
-    //iterating through the rerverse array 
-    for (let i = 0; i < reverseCard.length; i++)
+    let reverseCard = []
+    for (var num of card)
+    {
+        reverseCard.unshift(num)
+    }
+    //iterating through the rerverse array skipping 0 index which is the check digit
+    for (let i = 1; i < reverseCard.length; i++)
     {
         //checking all odd numbers in the array
         if (i % 2 === 1)
         {
             // assigning every odd number in the array to var oddArray and multiply it by 2;
-            let oddArray = card[i] * 2;
+            let oddArray = reverseCard[i] * 2;
             //checking if oddArray is greater than 9, if so subtract 9.
             if (oddArray > 9)
             {
                 oddArray = oddArray - 9;   
             }
-           // console.log(`i: ${i} array: ${card[i]} oddArray: ${oddArray}` )
+            //console.log(`i: ${i} array: ${reverseCard[i]} oddArray: ${oddArray}` )
             totalOddArray += oddArray;
         }
         else
         {
-            let evenArray = card[i];
-            //console.log(`i: ${i} array: ${card[i]} evenArray: ${evenArray}` )
+            let evenArray = reverseCard[i];
+            //console.log(`i: ${i} array: ${reverseCard[i]} evenArray: ${evenArray}` )
             totalEvenArray += evenArray;
         }
 
     }
-    //getting total value based on the Luhn algorithm
+    //getting total sum value based on the Luhn algorithm
     sum = totalEvenArray + totalOddArray;
     //if the sum of the numbers remainder is 0, then the output is true based on the Luhn algorithm
-    if (sum % 10 === 0)
+    return card[card.length -1] === 10 - (sum % 10);
+
+};
+
+//This functions role is to check through the nested array 
+//for which numbers are invalid, and return 
+//another nested array of invalid cards.
+const findInvalidCards = (batch) =>
+{
+    //creating empty array for invalid card numbers
+    let invalidCards = [];
+    //running through array of cards
+    for (var cards of batch)
     {
-        return true;
+        //calling validateCred function on cards and adding the invalid cards to the array
+        if(!validateCred(cards))
+        {
+            invalidCards.push(cards);
+        }
     }
-    else
-    {
-        return false;
-    }
-}
+    return invalidCards;
+};
 
-//should return true
-console.log(validateCred(valid1));
-console.log(validateCred(valid2));
-console.log(validateCred(valid3));
-console.log(validateCred(valid4));
-console.log(validateCred(valid5));
 
-//should return false
-console.log(validateCred(invalid1));
-console.log(validateCred(invalid2));
-console.log(validateCred(invalid3));
-console.log(validateCred(invalid4));
-console.log(validateCred(invalid5));
+//checking functions
 
-console.log(validateCred(mystery1)); //should return false
-console.log(validateCred(mystery2)); //should return true
-console.log(validateCred(mystery3)); //should return false
-console.log(validateCred(mystery4)); //should return false
-console.log(validateCred(mystery5)); //should return true
+for (let i = 0; i < batch.length; i++)
+{
+    console.log(validateCred(batch[i]));
+};
+
+const invalidCards = findInvalidCards(batch);
+for (let i = 0; i < invalidCards.length; i++){
+    console.log(invalidCards[i])
+};
+
