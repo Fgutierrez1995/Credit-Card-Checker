@@ -85,6 +85,74 @@ const findInvalidCards = (batch) =>
     return invalidCards;
 };
 
+//idInvalidCardCompanies() should return an array of companies that have 
+//mailed out cards with invalid numbers. This array should NOT contain 
+//duplicates, i.e. even if there are two invalid Visa cards, 
+//"Visa" should only appear once in the array.
+const idInvalidCardCompanies = (batch) =>
+{
+    //creating empty array of companies with invalid credit cards numbers
+    let invalidCompanies = [];
+    //creating empty array of cards with invalid credit card numbers
+    let invalidCards = [];
+    for (var cards of batch)
+    {
+        //calling validateCred function on cards and adding the invalid cards to the array
+        if(!validateCred(cards))
+        {
+            invalidCards.push(cards);
+        }
+    }
+    //running through the invalidCards array
+    for (let i = 0; i < invalidCards.length; i++)
+    {
+        //checking each array inside the array at index 0 to see if the 
+        //value at the index is 3 and if the invalidCompanies array does
+        //not have "Amex" in the array.
+        if (invalidCards[i][0] === 3 && invalidCompanies.indexOf("Amex") === -1)
+        {
+            invalidCompanies.push("Amex");
+        }
+        //checking each array inside the array at index 0 to see if the 
+        //value at the index is 4 and if the invalidCompanies array does
+        //not have "Visa" in the array.
+        else if (invalidCards[i][0] === 4 && invalidCompanies.indexOf("Visa") === -1)
+        {
+            invalidCompanies.push("Visa");
+
+        }
+        //checking each array inside the array at index 0 to see if the 
+        //value at the index is 5 and if the invalidCompanies array does
+        //not have "Mastercard" in the array.
+        else if (invalidCards[i][0] === 5 && invalidCompanies.indexOf("Mastercard") === -1)
+        {
+            invalidCompanies.push("Mastercard");
+
+        }
+        //checking each array inside the array at index 0 to see if the 
+        //value at the index is 6 and if the invalidCompanies array does
+        //not have "Discover" in the array.
+        else if (invalidCards[i][0] === 6 && invalidCompanies.indexOf("Discover") === -1)
+        {
+            invalidCompanies.push("Discover");
+
+        }
+        //checking each array inside the array at index 0 to see if the 
+        //value at the index is 7 or greater and if the invalidCompanies array does
+        //not have "Company not found" in the array.
+        else if (invalidCards[i][0] > 7 && invalidCompanies.indexOf("Company not found") === -1)
+        {
+            invalidCompanies.push("Company not found");
+
+        }
+    }
+
+    //returning the array of companies with invalid credit card numbers
+    return invalidCompanies;
+};
+
+
+
 
 //checking functions
 
@@ -98,3 +166,7 @@ for (let i = 0; i < invalidCards.length; i++){
     console.log(invalidCards[i])
 };
 
+const invalidCompanies = idInvalidCardCompanies(batch);
+for (let i = 0; i < invalidCompanies.length; i++){
+    console.log(invalidCompanies[i])
+};
